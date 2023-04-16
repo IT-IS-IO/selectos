@@ -1,7 +1,7 @@
 name: selectos
 description: Cross-Platform dropdown select plugin
 version: 0.0.1
-homepage:
+homepage: https://pub.dev/packages/selectos
 
 environment:
   sdk: '>=2.19.4 <3.0.0'
@@ -13,6 +13,7 @@ dependencies:
   flutter_web_plugins:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
+  bs_flutter_utils: ^1.0.2
 
 dev_dependencies:
   flutter_test:

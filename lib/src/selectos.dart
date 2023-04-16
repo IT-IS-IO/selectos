@@ -2,15 +2,16 @@ import 'package:bs_flutter_utils/bs_flutter_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../bs_flutter_selectbox.dart';
+import '../selectos.dart';
 import '../src/components/bs_wrapper_option.dart';
 
 export 'customize/bs_selectbox_size.dart';
 export 'customize/bs_selectbox_style.dart';
 export 'utils/bs_overlay.dart';
 
-class BsSelectBox extends StatefulWidget {
-  const BsSelectBox({
+class Selectos extends StatefulWidget {
+
+  const Selectos({
     Key? key,
     required this.controller,
     this.margin = EdgeInsets.zero,
@@ -42,7 +43,7 @@ class BsSelectBox extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _BsSelectBoxState();
+    return _SelectosState();
   }
 
   final bool isValid;
@@ -96,14 +97,18 @@ class BsSelectBox extends StatefulWidget {
   final VoidCallback? onOpen;
 
   final VoidCallback? onClose;
+
 }
 
-class _BsSelectBoxState extends State<BsSelectBox> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  GlobalKey<State> _key = GlobalKey<State>();
-  GlobalKey<State> _keyOverlay = GlobalKey<State>();
+class _SelectosState extends State<Selectos> with SingleTickerProviderStateMixin {
 
-  Duration duration = Duration(milliseconds: 100);
+  final GlobalKey<State> _key = GlobalKey<State>();
+  final GlobalKey<State> _keyOverlay = GlobalKey<State>();
+
+  Duration duration = const Duration(milliseconds: 100);
+
   bool isOpen = false;
+
   late FocusNode _focusNode;
   late FocusNode _focusNodeKeyboard;
 
@@ -117,6 +122,8 @@ class _BsSelectBoxState extends State<BsSelectBox> with SingleTickerProviderStat
 
   @override
   void initState() {
+    super.initState();
+
     _focusNode = widget.focusNode == null ? FocusNode() : widget.focusNode!;
     _focusNode.addListener(onFocus);
 
@@ -127,14 +134,15 @@ class _BsSelectBoxState extends State<BsSelectBox> with SingleTickerProviderStat
 
     _animated = AnimationController(vsync: this, duration: duration);
 
-    super.initState();
   }
 
+
   @override
-  void didUpdateWidget(covariant BsSelectBox oldWidget) {
+  void didUpdateWidget(covariant Selectos oldWidget) {
     _animated.duration = duration;
     super.didUpdateWidget(oldWidget);
   }
+
 
   @override
   void dispose() {
@@ -143,19 +151,22 @@ class _BsSelectBoxState extends State<BsSelectBox> with SingleTickerProviderStat
     super.dispose();
   }
 
+
   void onFocus() {
     if (_focusNode.hasFocus && !widget.disabled) open();
   }
+
 
   void onKeyPressed(RawKeyEvent event) {
     if(event.logicalKey == LogicalKeyboardKey.escape)
       close();
   }
 
-  void updateState(Function function) {
-    if(mounted)
-      setState(() => function());
+
+  void updateState(VoidCallback callback) {
+    if(mounted) setState(() => callback());
   }
+
 
   void pressed() {
     if (!widget.disabled) {
@@ -163,7 +174,6 @@ class _BsSelectBoxState extends State<BsSelectBox> with SingleTickerProviderStat
       else close();
     }
 
-    return null;
   }
 
   void api({String searchValue = ''}) {
@@ -285,7 +295,7 @@ class _BsSelectBoxState extends State<BsSelectBox> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+
     return WillPopScope(
       onWillPop: () async {
         bool returned = true;
@@ -593,8 +603,5 @@ class _BsSelectBoxState extends State<BsSelectBox> with SingleTickerProviderStat
       },
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 
 }

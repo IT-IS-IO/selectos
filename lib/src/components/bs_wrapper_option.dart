@@ -1,8 +1,7 @@
 import 'dart:async';
-
+import '../../selectos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:uved/presentation/widgets/external_plugins/bs_flutter_selectbox/bs_flutter_selectbox.dart';
 
 /// Wrapper overlay of options
 // ignore: must_be_immutable
@@ -32,7 +31,7 @@ class BsWrapperOptions extends StatefulWidget {
     return _BsWrapperOptionsState();
   }
 
-  /// define searchable of [BsSelectBox]
+  /// define searchable of [Selectos]
   final bool searchable;
 
   /// Used so that the overlay wrapper follows the select box
@@ -44,22 +43,22 @@ class BsWrapperOptions extends StatefulWidget {
   /// placeholder search input
   final String placeholderSearch;
 
-  /// To get updated size of [BsSelectBox]
+  /// To get updated size of [Selectos]
   final GlobalKey<State> containerKey;
 
-  /// define style of [BsWrapperOption] below of [BsSelectBox]
+  /// define style of [BsWrapperOption] below of [Selectos]
   final BsSelectBoxStyle selectBoxStyle;
 
-  /// define size of [BsWrapperOption] below of [BsSelectBox]
+  /// define size of [BsWrapperOption] below of [Selectos]
   final BsSelectBoxSize selectBoxSize;
 
-  /// define controller of [BsWrapperOption] below of [BsSelectBox]
+  /// define controller of [BsWrapperOption] below of [Selectos]
   final BsSelectBoxController controller;
 
-  /// define on search action of [BsWrapperOption] below of [BsSelectBox]
+  /// define on search action of [BsWrapperOption] below of [Selectos]
   final ValueChanged<String>? onSearch;
 
-  /// define on change action of [BsWrapperOption] below of [BsSelectBox]
+  /// define on change action of [BsWrapperOption] below of [Selectos]
   final ValueChanged<BsSelectBoxOption> onChange;
 
   final VoidCallback onClose;

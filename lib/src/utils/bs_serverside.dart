@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uved/presentation/widgets/external_plugins/bs_flutter_selectbox/bs_flutter_selectbox.dart';
+import '../../selectos.dart';
 
 /// define function for renderText options
 typedef BsRenderText = Widget Function(dynamic data);
