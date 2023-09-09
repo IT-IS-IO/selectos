@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 
 import 'selectos_platform_interface.dart';
 
-/// An implementation of [SelectosPlatform] that uses method channels.
 class MethodChannelSelectos extends SelectosPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
