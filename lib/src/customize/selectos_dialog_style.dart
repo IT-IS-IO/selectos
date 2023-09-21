@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:selectos/src/customize/selectos_field_style.dart';
 
 class SelectosDialogStyle {
 
   const SelectosDialogStyle({
     this.maxHeight = 300.0,
+    this.search = const SelectosFieldStyle(),
     this.decoration = const BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.all(Radius.circular(10.0)),
       boxShadow: [
-        BoxShadow(
-          color: Colors.black12,
-          blurRadius: 10.0,
-          spreadRadius: 5.0,
-          offset: Offset(0.0, 5.0),
-        ),
+        // bottom shadow
+
       ],
     ),
     this.padding = const EdgeInsets.all(10.0),
@@ -27,6 +25,8 @@ class SelectosDialogStyle {
   final EdgeInsets margin;
 
   final double maxHeight;
+
+  final SelectosFieldStyle search;
 
 
 }

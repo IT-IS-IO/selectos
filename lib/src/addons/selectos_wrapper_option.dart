@@ -60,7 +60,7 @@ class _SelectosWrapperOptionsState extends State<SelectosWrapperOptions> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _controller = TextEditingController();
 
-  static const MARGIN = EdgeInsets.all(8);
+  static const MARGIN = EdgeInsets.all(0);
 
   late Size _size;
   late Offset _offset;
@@ -84,12 +84,11 @@ class _SelectosWrapperOptionsState extends State<SelectosWrapperOptions> {
     super.initState();
 
     _focusNode
-      ..onKey = (_, event) {
-        if(event.logicalKey == LogicalKeyboardKey.escape) widget.onClose();
-        return KeyEventResult.ignored;
-      }
-      ..addListener(_onFocus)
-      ..requestFocus();
+      // ..onKey = (_, event) {
+      //   if(event.logicalKey == LogicalKeyboardKey.escape) widget.onClose();
+      //   return KeyEventResult.ignored;
+      // }
+      .addListener(_onFocus);
 
 
     RenderBox renderBox = widget.containerKey.currentContext!.findRenderObject() as RenderBox;
@@ -132,14 +131,27 @@ class _SelectosWrapperOptionsState extends State<SelectosWrapperOptions> {
                 child: Container(
                   key: _keyAll,
                   width: _overlayWidth,
-                  decoration: dgStyle.decoration,
+                  decoration: dgStyle.decoration?.copyWith(
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        spreadRadius: 5,
+                        blurRadius: 10,
+                        offset: const Offset(0, 18), // changes position of shadow
+                      ),
+                    ]
+                  ),
+                  clipBehavior: Clip.hardEdge,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
 
                       if (widget.searchable)
                         Container(
-                          margin: const EdgeInsets.only(bottom: 5.0),
                           constraints: BoxConstraints(
                             maxHeight: fdStyle.inputMaxHeight,
                             minHeight: fdStyle.inputMinHeight,
@@ -147,19 +159,20 @@ class _SelectosWrapperOptionsState extends State<SelectosWrapperOptions> {
                           child: TextField(
                             focusNode: _focusNode,
                             controller: _controller,
-                            decoration: fdStyle.searchDecoration,
+                            decoration: fdStyle.decoration,
                             selectionHeightStyle: BoxHeightStyle.max,
                             onChanged: (value) => _doneTyping(value, (value) { widget.onSearch?.call(value); }),
                           )
                         ),
 
-                      if (widget.controller.processing)
-                        const LoadingAddon(),
+                      if (widget.controller.processing)const LoadingAddon()
+                      else const SizedBox(height: 4),
+
+                      if (!widget.controller.processing && widget.controller.options.isEmpty) const EmptyAddon(),
 
                       if (!widget.controller.processing || widget.controller.options.isNotEmpty) ...[
                         Container(
                           key: _key,
-                          height: _overlayHeight == 0 ? null : _overlayHeight,
                           constraints: BoxConstraints(
                             maxHeight: dgStyle.maxHeight,
                           ),
@@ -182,7 +195,7 @@ class _SelectosWrapperOptionsState extends State<SelectosWrapperOptions> {
                                     child: Row(
                                       children: [
 
-                                        Expanded(child: option.getText),
+                                        Flexible(child: option.getText),
 
                                         // ...widget.actions.map((e) => IconButton(
                                         //     onPressed: () {
@@ -205,11 +218,7 @@ class _SelectosWrapperOptionsState extends State<SelectosWrapperOptions> {
                           ),
                         )
                       ]
-                      else ...[
-                        const EmptyAddon(),
-                        SizedBox(key: _key)
-                      ]
-
+                      else SizedBox(key: _key)
 
                     ],
                   ),

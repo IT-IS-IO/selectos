@@ -26,10 +26,7 @@ class SelectosFieldStyle {
     this.focusedBoxShadow = const [],
     this.borderRadius = const BorderRadius.all(Radius.circular(5.0)),
     this.decoration = bordered,
-    this.searchDecoration = bordered,
   });
-
-  final InputDecoration searchDecoration;
 
   final InputDecoration decoration;
 

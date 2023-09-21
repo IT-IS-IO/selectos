@@ -63,7 +63,6 @@ class Selectos extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _SelectosState();
 
-
 }
 
 
@@ -185,9 +184,6 @@ class _SelectosState extends State<Selectos> {
                     boxShadow: boxShadow,
                     onChange: (value) => field.didChange(value),
                   ),
-
-                  // if (widget.hintText != null)
-                  //   renderHintLabel(!field.hasError),
 
                 ],
               ),
@@ -417,19 +413,27 @@ class _SelectosState extends State<Selectos> {
         _wrapperOptions?.update();
 
       },
-      onSearch: (value) {
+      onSearch: (String value) async {
 
-        _controller.options = _options.where((element) => value == '' || element.searchable.contains(value)).toList();
-        if (_keyOverlay.currentState != null && _keyOverlay.currentState!.mounted)
-          _keyOverlay.currentState!.setState(() {});
+        if (isNotNull(widget.remote)) _api(query: value);
+        else {
 
-        _wrapperOptions?.update();
+          _controller.options = _options.where((element) => value.isEmpty || element.searchable.contains(value)).toList();
 
-        _updateState(() { });
+          if (_keyOverlay.currentState != null && _keyOverlay.currentState!.mounted)
+            _keyOverlay.currentState!.setState(() {});
+
+          _wrapperOptions?.update();
+
+          _updateState(() { });
+        }
+
+
 
       },
     );
 
+    if (isNotNull(widget.remote)) _api();
 
     SelectosOverlayEntry overlayEntry = SelectosOverlay.add(OverlayEntry(builder: (context) =>  _wrapperOptions!), () => _updateState(() => isOpen = false));
 
@@ -464,6 +468,23 @@ class _SelectosState extends State<Selectos> {
 
     _updateState(() => _focusNode.requestFocus());
   }
+
+
+  void _api({ String query = '' }) {
+
+      _controller.processing = true;
+
+      _keyOverlay.currentState?.setState(() {});
+
+      widget.remote?.call(query: query).then((response) {
+        _controller.processing = false;
+        _controller.options = response.options;
+        _wrapperOptions?.update();
+        _updateState(() { });
+    });
+
+  }
+
 
 
   @override

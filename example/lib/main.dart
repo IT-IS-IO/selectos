@@ -13,10 +13,22 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-  }
+
+
+  final OPTIONS = [
+    SelectosOption(
+      value: '1',
+      text: Text('Option 1'),
+    ),
+    SelectosOption(
+      value: '2',
+      text: Text('Option 2'),
+    ),
+    SelectosOption(
+      value: '3',
+      text: Text('Option 3'),
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -31,29 +43,14 @@ class _MyAppState extends State<MyApp> {
             margin: const EdgeInsets.all(16),
             constraints: const BoxConstraints(maxWidth: 414),
             child: Selectos(
-              searchable: true,
-              controller: SelectosController(
-                options: const [
-                  SelectosOption(
-                    value: '1',
-                    text: Text('Option 1'),
-                  ),
-                  SelectosOption(
-                    value: '2',
-                    text: Text('Option 2'),
-                  ),
-                  SelectosOption(
-                    value: '3',
-                    text: Text('Option 3'),
-                  ),
-                ],
-              ),
-              validators: const [ SelectosValidator.required ],
               title: "Selectos",
               hintText: "Select an option",
-              remote: ({String? query}) async {
-                await Future.delayed(const Duration(seconds: 2));
-                return const SelectosRemoteResponse(options: []);
+              searchable: true,
+              controller: SelectosController(options: []),
+              validators: const [ SelectosValidator.required ],
+              remote: ({ String? query }) async {
+                await Future.delayed(const Duration(seconds: 1));
+                return SelectosRemoteResponse(options: OPTIONS.where((element) => element.getValueAsString.contains(query ?? '')).toList());
               },
             ),
           ),
